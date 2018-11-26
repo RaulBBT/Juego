@@ -1,0 +1,277 @@
+<html>
+<head>
+	<title>Juego</title>
+	<script>
+	var fps=20;
+	var pasoX;
+	var pasoY;
+	var pasoBarra;
+	var posX;
+	var posY;
+	var puntuacion=0;
+	var arrayBolas= new Array(1);
+	var r=2;
+	var micirculo;
+	var coordx;
+	var coordy;
+	var color;
+	var velx;
+	var vely;
+	var colorB;
+	var posXBarra;
+	var posYBarra;
+	var ancho;
+	var alto;
+	var colorBarra;
+	var barra;
+	class Bola{
+		constructor(posX,posY,r,pasoX,pasoY,colorB){
+			this.posX=posX;
+			this.posY=posY;
+			this.pasoX=pasoX;
+			this.pasoY=pasoY;
+			this.r=r;
+			this.colorB=colorB;
+			this.micirculo=document.createElementNS("http://www.w3.org/2000/svg","circle");
+			this.micirculo.setAttribute("cx",this.posX);
+			this.micirculo.setAttribute("cy",this.posY);
+			this.micirculo.setAttribute("r",this.r);
+			this.micirculo.style.fill=colorB;
+			document.getElementById("miSVG").appendChild(this.micirculo);
+		}
+		
+		mover(){
+			this.posX += this.pasoX;
+			this.posY+=this.pasoY;
+			this.micirculo.setAttribute('cx', this.posX);
+			this.micirculo.setAttribute('cy', this.posY);
+		}
+		choque(){
+			if(this.posX <= 10+15){
+				this.pasoX*=-1;
+			}
+			if(this.posX >= 410-15){
+				this.pasoX*=-1;
+			}
+			if(this.posY <=100+17){
+			if (document.getElementById("caja2").style.stroke==this.micirculo.style.fill){
+				this.pasoY*=-1;
+				puntuacion++;
+				document.getElementById("punt").innerHTML="Puntuacion: "+puntuacion;
+				color = Math.floor((Math.random()*10)+1);
+				switch (color) {
+					case 1:
+						document.getElementById("caja2").style.stroke="#00FF17";
+						break;
+					case 2:
+						document.getElementById("caja2").style.stroke="#00FF17";
+						break;
+					case 3:
+						document.getElementById("caja2").style.stroke="#00FF17";
+						break;
+					case 4:
+						document.getElementById("caja2").style.stroke="#00FF17";
+						break;
+					case 5:
+						document.getElementById("caja2").style.stroke="#E8FF00";
+						break;
+					case 6:
+						document.getElementById("caja2").style.stroke="#E8FF00";
+						break;
+					case 7:
+						document.getElementById("caja2").style.stroke="#E8FF00";
+						break;
+					case 8:
+						document.getElementById("caja2").style.stroke="#FF7000";
+						break;
+					case 9:
+						document.getElementById("caja2").style.stroke="#FF7000";
+						break;
+					case 10:
+						document.getElementById("caja2").style.stroke="#FF0000";
+						break;
+					}
+			}else{
+					document.getElementById("perdido").style.visibility='visible';
+			}
+			}
+			if(this.posY >=barra.posYBarra-10){
+				if (this.posX>=barra.posXBarra && this.posX<=barra.posXBarra+110 && this.posY<=barra.posYBarra){
+					this.pasoY*=-1;
+				}else{
+					document.getElementById("perdido").style.visibility='visible';
+				}
+			}
+		}
+		cambiaColorBola(color){
+			if (color==1){
+				this.micirculo.style.fill="#00FF17";
+				if(this.pasoX<0){
+					this.pasoX=-5;
+				}else{
+					this.pasoX=5;
+				}
+				if(this.pasoY<0){
+					this.pasoY=-5;
+				}else{
+					this.pasoY=5;
+				}
+			}
+			if (color==2){
+				this.micirculo.style.fill="#E8FF00";
+				if(this.pasoX<0){
+					this.pasoX=-6;
+				}else{
+					this.pasoX=6;
+				}
+				if(this.pasoY<0){
+					this.pasoY=-6;
+				}else{
+					this.pasoY=6;
+				}
+			}
+			if (color==3){
+				this.micirculo.style.fill="#FF7000";
+				if(this.pasoX<0){
+					this.pasoX=-7;
+				}else{
+					this.pasoX=7;
+				}
+				if(this.pasoY<0){
+					this.pasoY=-7;
+				}else{
+					this.pasoY=7;
+				}
+			}
+			if (color==4){
+				this.micirculo.style.fill="#FF0000";
+				if(this.pasoX<0){
+					this.pasoX=-8;
+				}else{
+					this.pasoX=8;
+				}
+				if(this.pasoY<0){
+					this.pasoY=-8;
+				}else{
+					this.pasoY=8;
+				}
+			}
+		}
+	}
+	class Barra{
+		constructor(posXBarra,posYBarra,ancho,alto,colorBarra,pasoBarra){
+			this.posXBarra=posXBarra;
+			this.posYBarra=posYBarra;
+			this.ancho=ancho;
+			this.alto=alto;
+			this.pasoBarra=pasoBarra;
+			this.colorBarra=colorBarra;
+			this.mibarra=document.createElementNS("http://www.w3.org/2000/svg","rect");
+			this.mibarra.setAttribute("x",posXBarra);
+			this.mibarra.setAttribute("y",posYBarra);
+			this.mibarra.setAttribute("width",ancho);
+			this.mibarra.setAttribute("height",alto);
+			this.mibarra.style.fill=colorBarra;
+			document.getElementById("miSVG").appendChild(this.mibarra);
+		}
+		mover(codigo){
+			if (codigo==39){
+				if(this.posXBarra<=410-120){
+					this.posXBarra+=15;
+					this.mibarra.setAttribute('x', this.posXBarra);
+				}
+			}else if (codigo==37){
+				if(this.posXBarra>=20){
+					this.posXBarra-=15;
+					this.mibarra.setAttribute('x', this.posXBarra);
+				}
+			}
+		}
+		cambiaColorBarra(color){
+			if (color==1){
+				this.mibarra.style.fill="#00FF17";
+				//this.pasoBarra=15;
+			}
+			if (color==2){
+				this.mibarra.style.fill="#E8FF00";
+				//this.pasoBarra=17;
+			}
+			if (color==3){
+				this.mibarra.style.fill="#FF7000";
+				//this.pasoBarra=20;
+			}
+			if (color==4){
+				this.mibarra.style.fill="#FF0000";
+				//this.pasoBarra=22;
+			}
+		}
+	}
+	
+	function cambiarColor(color){
+	for (var i=0;i<arrayBolas.length;i++){
+			arrayBolas[i].cambiaColorBola(color)
+		}
+		barra.cambiaColorBarra(color);
+	}
+	function movimiento(){
+		for (var i=0;i<arrayBolas.length;i++){
+			arrayBolas[i].mover();
+			arrayBolas[i].choque();
+		}
+	}
+	function inicio(){
+		for(var i=0;i<arrayBolas.length;i++){
+			coordx = 200;
+			coordy = 200;
+			velx = 5;
+			vely = 5;
+			arrayBolas[i]=new Bola(coordx,coordy,10,velx,vely,"#00FF17");
+		}
+		barra = new Barra(150,570,110,20,"#00FF17",15);
+		var intervalo=setInterval(movimiento,fps);
+	}
+	function moverPieza(e){
+	var keyCode = document.all ? e.which : e.keyCode;
+		if (keyCode==39){
+			barra.mover(39);
+		}else if (keyCode==37){
+			barra.mover(37);
+		}else if (keyCode==65){
+			cambiarColor(1);
+		}else if (keyCode==83){
+			cambiarColor(2);
+		}else if (keyCode==68){
+			cambiarColor(3);
+		}else if (keyCode==70){
+			cambiarColor(4);
+		}
+	}
+	
+	
+	window.onkeydown = moverPieza;
+	</script>
+	<style>
+	img {
+		float:left;
+		position:absolute;
+		margin-left:60px;
+	}
+	#perdido {
+		visibility:hidden;
+		float:right;
+		position:absolute;
+		margin-top:500px;
+		margin-left:-99px;
+	}
+	</style>
+	</head>
+<body onload="inicio()"> 
+<img src="controles.png"/>
+<svg id="miSVG" width="510" height="600">
+	<rect id="caja" x="10" y="100" width="400" height="500" style="stroke:#A4A773;stroke-width:5;fill:white;"/>
+	<rect id="caja2" x="10" y="100" width="400" height="1" style="stroke:#00FF17;stroke-width:5;fill:white;"/>
+</svg>
+<label id="punt">Puntuacion: 0</label>&nbsp;&nbsp;&nbsp;
+<label id="perdido">Has perdido...</label>
+</body>
+</html>
